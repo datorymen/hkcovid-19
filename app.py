@@ -12,10 +12,10 @@ st.title('你附近有個案到訪過的大廈嗎？')
 
 df1 = df.groupby('地區').agg('count').reset_index()
 df1 = df1[['地區', '大廈名單']]
-df1.columns = ['地區', '14天内的確診总數量']
-df1 = df1.sort_values('14天内的確診总數量', ascending=False).reset_index(drop=True)
+df1.columns = ['地區', '14天内的大廈总數量']
+df1 = df1.sort_values('14天内的大廈总數量', ascending=False).reset_index(drop=True)
 df1['排名'] = df1.index + 1
-df1 = df1[['排名', '地區', '14天内的確診总數量']]
+df1 = df1[['排名', '地區', '14天内的大廈总數量']]
 
 # top_area_1 = df1.iloc[0, 1]
 # top_area_1_number = df1.iloc[0, 2]
