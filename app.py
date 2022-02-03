@@ -9,6 +9,7 @@ days_14_ago = str(today - datetime. timedelta(days=14))
 
 
 
+
 df = pd.read_csv('http://www.chp.gov.hk/files/misc/building_list_chi.csv')
 df['個案最後到訪日期'] = pd.to_datetime(df['個案最後到訪日期'], format="%d/%m/%Y")
 df = df[df['個案最後到訪日期'] >= days_14_ago]
@@ -17,7 +18,7 @@ df = df[df['個案最後到訪日期'].notnull()]
 
 st.title('你附近有個案到訪過的大廈嗎？')
 st.write('數據更新時間：' + now)
-st.write('過去14日：' + days_14_ago + '----' + yesterday)
+st.write('過去14日：' + (today - datetime. timedelta(days=14)).strftime("%m-%d") + ' 到 ' + yesterday)
 
 df1 = df.groupby('地區').agg('count').reset_index()
 df1 = df1[['地區', '大廈名單']]
