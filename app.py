@@ -6,7 +6,7 @@ import datetime
 today = datetime.date.today()
 yesterday = (today - datetime.timedelta(days=1) + datetime.timedelta(hours=8)).strftime("%m-%d")
 now = (datetime.datetime.today() + datetime.timedelta(hours=8)).strftime("%Y-%m-%d %H:%M")
-days_14_ago = str(today - datetime.timedelta(days=14))
+days_14_ago = str(today - datetime.timedelta(days=14) )
 
 
 
@@ -42,7 +42,7 @@ st.markdown(hide_table_row_index, unsafe_allow_html=True)
 
 # Display a static table
 
-st.header('18區個案到訪過的大廈數量如下：')
+st.header('18區個案到訪過的大廈數量排名：')
 
 st.table(df1)
 
