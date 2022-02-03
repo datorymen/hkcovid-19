@@ -2,10 +2,11 @@ import streamlit as st
 import pandas as pd
 import datetime
 
+
 today = datetime.date.today()
-yesterday = (today - datetime. timedelta(days=1)).strftime("%m-%d")
-now = datetime.datetime.today().strftime("%Y-%m-%d %H:%M")
-days_14_ago = str(today - datetime. timedelta(days=14))
+yesterday = (today - datetime.timedelta(days=1)).strftime("%m-%d")
+now = (datetime.datetime.today() + datetime.timedelta(hours=8)).strftime("%Y-%m-%d %H:%M")
+days_14_ago = str(today - datetime.timedelta(days=14))
 
 
 
