@@ -4,7 +4,7 @@ import datetime
 
 
 today = datetime.date.today()
-yesterday = (today - datetime.timedelta(days=1)).strftime("%m-%d")
+yesterday = (today - datetime.timedelta(days=1) + datetime.timedelta(hours=8)).strftime("%m-%d")
 now = (datetime.datetime.today() + datetime.timedelta(hours=8)).strftime("%Y-%m-%d %H:%M")
 days_14_ago = str(today - datetime.timedelta(days=14))
 
@@ -19,7 +19,7 @@ df = df[df['個案最後到訪日期'].notnull()]
 
 st.title('你附近有個案到訪過的大廈嗎？')
 st.write('數據更新時間：' + now)
-st.write('過去14日：' + (today - datetime. timedelta(days=14)).strftime("%m-%d") + ' 到 ' + yesterday)
+st.write('過去14日：' + (today - datetime. timedelta(days=14) + datetime.timedelta(hours=8)).strftime("%m-%d") + ' 到 ' + yesterday)
 
 df1 = df.groupby('地區').agg('count').reset_index()
 df1 = df1[['地區', '大廈名單']]
