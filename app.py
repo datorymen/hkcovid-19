@@ -8,35 +8,10 @@ import numpy as np
 st.set_page_config(layout='wide')
 
 
-st.markdown(
-            f'''
-            <style>
-                .reportview-container .sidebar-content {{
-                    padding-top: {1}rem;
-                }}
-                .reportview-container .main .block-container {{
-                    padding-top: {1}rem;
-                }}
-            </style>
-            ''',unsafe_allow_html=True)
-
-# max_width_str = f"max-width: 2000px;"
-# st.markdown(
-#         f"""
-#     <style>
-#     .reportview-container.main.block-container{{
-#         {max_width_str}
-#     }}
-#     </style>
-#     """,
-#         unsafe_allow_html=True,
-#     )
-
-
-
 today = datetime.datetime.today().strftime('%Y-%m-%d')
 today_time = datetime.datetime.today()
 today_str = today_time.strftime("%Y-%m-%d %H:%M")
+yesterday = (today_time - datetime.timedelta(days=1)).strftime('%Y-%m-%d')
 yesterday_time = (today_time - datetime.timedelta(days=1))
 yesterday_str = yesterday_time.strftime("%m" + "月" + "%d" + "日")
 # now = (datetime.datetime.today() + datetime.timedelta(hours=8)).strftime("%Y-%m-%d %H:%M")
@@ -47,6 +22,8 @@ days_14_ago_str = days_14_ago_time.strftime("%m" + "月" + "%d" + "日")
 
 days_14_ago = str(today_time - datetime.timedelta(days=14))
 
+st.write(today)
+st.write(yesterday)
 
 # CSS to inject contained in a string
 hide_table_row_index = """
@@ -68,18 +45,7 @@ selection = st.radio(
           '請選擇功能：', ['各區流動採樣站', '個案曾經到訪過的大廈' ])
 
 if selection == '個案曾經到訪過的大廈':
-     # st.set_page_config(layout='wide')
-     # max_width_str = f"max-width: 2000px;"
-     # st.markdown(
-     #      f"""
-     #     <style>
-     #     .reportview-container.main.block-container{{
-     #         {max_width_str}
-     #     }}
-     #     </style>
-     #     """,
-     #      unsafe_allow_html=True,
-     # )
+
 
      df = pd.read_csv('http://www.chp.gov.hk/files/misc/building_list_chi.csv')
      df['個案最後到訪日期'] = pd.to_datetime(df['個案最後到訪日期'], format="%d/%m/%Y")
@@ -87,7 +53,6 @@ if selection == '個案曾經到訪過的大廈':
      df['曾到訪個案數量'] = df['相關個案編號'].str.split().str.len()
      df = df[df['個案最後到訪日期'].notnull()]
 
-     # st.write('個案曾經到訪過的大廈')
      st.write('信息更新時間：' + now_str)
      st.write('過去14日範圍是指' + days_14_ago_str + ' 到 ' + yesterday_str)
 
@@ -126,22 +91,16 @@ if selection == '個案曾經到訪過的大廈':
      st.caption('數據來自衛生署。刷新頁面即可更新。')
 
 if selection == '各區流動採樣站':
-     # st.set_page_config(layout='wide')
-     # max_width_str = f"max-width: 2000px;"
-     # st.markdown(
-     #      f"""
-     #     <style>
-     #     .reportview-container.main.block-container{{
-     #         {max_width_str}
-     #     }}
-     #     </style>
-     #     """,
-     #      unsafe_allow_html=True,
-     # )
 
-     st.write('信息更新日期：' + today)
+     # st.write('信息更新日期：' + today)
 
-     pdf = pdfplumber.open(today + '-a-mscs.pdf')
+     try:
+          pdf = pdfplumber.open(today + '-a-mscs.pdf')
+          st.write('信息更新日期：' + today)
+     except:
+          pdf = pdfplumber.open(yesterday + '-a-mscs.pdf')
+          st.write('信息更新日期：' + yesterday)
+
      pages = len(pdf.pages)
 
      df_pdf = pd.DataFrame()
