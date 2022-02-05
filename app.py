@@ -89,23 +89,23 @@ if selection == '大廈清單':
 if selection == '各區流動採樣站':
      st.title('各區流動採樣站')
      st.write('數據更新日期：' + today)
-     st.write('正在開發中。。。')
-     # pdf = pdfplumber.open(today + '-a-mscs.pdf')
-     # pages = len(pdf.pages)
-     #
-     # df_pdf = pd.DataFrame()
-     # for i in range(1, pages):
-     #      first_page = pdf.pages[i]
-     #      table = first_page.extract_table()
-     #      table_df = pd.DataFrame(table)
-     #      df_pdf = df_pdf.append(table_df)
-     #
-     # df_pdf.rename(columns=df_pdf.iloc[0], inplace=True)
-     # df_pdf.drop(df_pdf.index[0], inplace=True)
-     # df_pdf = df_pdf[df_pdf['開放日期 \nOpening dates'].notnull()]
-     # df_pdf = df_pdf.fillna(method='ffill')
-     #
-     # st.table(df_pdf)
+     # st.write('正在開發中。。。')
+     pdf = pdfplumber.open(today + '-a-mscs.pdf')
+     pages = len(pdf.pages)
+
+     df_pdf = pd.DataFrame()
+     for i in range(1, pages):
+          first_page = pdf.pages[i]
+          table = first_page.extract_table()
+          table_df = pd.DataFrame(table)
+          df_pdf = df_pdf.append(table_df)
+
+     df_pdf.rename(columns=df_pdf.iloc[0], inplace=True)
+     df_pdf.drop(df_pdf.index[0], inplace=True)
+     df_pdf = df_pdf[df_pdf['開放日期 \nOpening dates'].notnull()]
+     df_pdf = df_pdf.fillna(method='ffill')
+
+     st.table(df_pdf)
 
 
 
