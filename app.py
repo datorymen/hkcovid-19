@@ -6,7 +6,20 @@ import pdfplumber
 import numpy as np
 import re
 
+def _max_width_():
+    max_width_str = f"max-width: 2000px;"
+    st.markdown(
+        f"""
+    <style>
+    .reportview-container .main .block-container{{
+        {max_width_str}
+    }}
+    </style>    
+    """,
+        unsafe_allow_html=True,
+    )
 
+_max_width_()
 
 
 today = datetime.datetime.today().strftime('%Y-%m-%d')
