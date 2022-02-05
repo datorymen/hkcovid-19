@@ -8,19 +8,34 @@ import numpy as np
 st.set_page_config(layout='wide')
 
 
-today = datetime.datetime.today().strftime('%Y-%m-%d')
-today_time = datetime.datetime.today()
-today_str = today_time.strftime("%Y-%m-%d %H:%M")
-yesterday = (today_time - datetime.timedelta(days=1)).strftime('%Y-%m-%d')
-yesterday_time = (today_time - datetime.timedelta(days=1))
-yesterday_str = yesterday_time.strftime("%m" + "月" + "%d" + "日")
-# now = (datetime.datetime.today() + datetime.timedelta(hours=8)).strftime("%Y-%m-%d %H:%M")
+# today = datetime.datetime.today().strftime('%Y-%m-%d')
+# today_time = datetime.datetime.today()
+# today_str = today_time.strftime("%Y-%m-%d %H:%M")
+# yesterday = (today_time - datetime.timedelta(days=1)).strftime('%Y-%m-%d')
+# yesterday_time = (today_time - datetime.timedelta(days=1))
+# yesterday_str = yesterday_time.strftime("%m" + "月" + "%d" + "日")
+# # now = (datetime.datetime.today() + datetime.timedelta(hours=8)).strftime("%Y-%m-%d %H:%M")
+# now_time = (datetime.datetime.now(pytz.timezone('Asia/Hong_Kong')))
+# now_str = now_time.strftime("%Y-%m-%d %H:%M")
+# days_14_ago_time = today_time - datetime.timedelta(days=14)
+# days_14_ago_str = days_14_ago_time.strftime("%m" + "月" + "%d" + "日")
+# days_14_ago = str(today_time - datetime.timedelta(days=14))
+
+
 now_time = (datetime.datetime.now(pytz.timezone('Asia/Hong_Kong')))
 now_str = now_time.strftime("%Y-%m-%d %H:%M")
+
+today_time = datetime.datetime.date(now_time)
+today = today_time.strftime('%Y-%m-%d')
+today_str = today_time.strftime("%Y-%m-%d %H:%M")
+
+yesterday_time = (today_time - datetime.timedelta(days=1))
+yesterday = yesterday_time.strftime('%Y-%m-%d')
+yesterday_str = yesterday_time.strftime("%m" + "月" + "%d" + "日")
+
 days_14_ago_time = today_time - datetime.timedelta(days=14)
 days_14_ago_str = days_14_ago_time.strftime("%m" + "月" + "%d" + "日")
-
-days_14_ago = str(today_time - datetime.timedelta(days=14))
+days_14_ago = str(days_14_ago_time)
 
 st.write(today)
 st.write(yesterday)
