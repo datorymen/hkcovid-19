@@ -21,8 +21,6 @@ days_14_ago_str = days_14_ago_time.strftime("%m" + "月" + "%d" + "日")
 days_14_ago = str(today_time - datetime.timedelta(days=14))
 
 
-
-
 # CSS to inject contained in a string
 hide_table_row_index = """
             <style>
@@ -37,9 +35,9 @@ st.markdown(hide_table_row_index, unsafe_allow_html=True)
 # Display a static table
 
 selection = st.selectbox(
-          '請選擇功能', ['大廈清單', '各區流動採樣站'])
+          '請選擇功能', ['個案曾經到訪過的大廈', '各區流動採樣站'])
 
-if selection == '大廈清單':
+if selection == '個案曾經到訪過的大廈':
 
      df = pd.read_csv('http://www.chp.gov.hk/files/misc/building_list_chi.csv')
      df['個案最後到訪日期'] = pd.to_datetime(df['個案最後到訪日期'], format="%d/%m/%Y")
@@ -110,6 +108,11 @@ if selection == '各區流動採樣站':
      df_pdf = df_pdf[df_pdf['開放日期'].notnull()]
      df_pdf = df_pdf.fillna(method='ffill')
 
+     st.markdown(""" <style> .font {
+     font-size:500px;} 
+     </style> """, unsafe_allow_html=True)
+
+     st.write('test')
      st.table(df_pdf)
 
 
