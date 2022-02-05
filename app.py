@@ -1,14 +1,15 @@
 import streamlit as st
 import pandas as pd
 import datetime
+import pytz
+
 
 
 today = datetime.date.today()
 yesterday = (today - datetime.timedelta(days=1) + datetime.timedelta(hours=8)).strftime("%m-%d")
-now = (datetime.datetime.today() + datetime.timedelta(hours=8)).strftime("%Y-%m-%d %H:%M")
-days_14_ago = str(today - datetime.timedelta(days=14) )
-
-
+# now = (datetime.datetime.today() + datetime.timedelta(hours=8)).strftime("%Y-%m-%d %H:%M")
+now = (datetime.datetime.now(pytz.timezone('Asia/Hong_Kong'))).strftime("%Y-%m-%d %H:%M")
+days_14_ago = str(today - datetime.timedelta(days=14))
 
 
 df = pd.read_csv('http://www.chp.gov.hk/files/misc/building_list_chi.csv')
