@@ -2,7 +2,7 @@ import streamlit as st
 import pandas as pd
 import datetime
 import pytz
-# import pdfplumber
+import pdfplumber
 
 
 st.write('香港COVID-19小工具' )
