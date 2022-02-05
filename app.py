@@ -4,12 +4,17 @@ import datetime
 import pytz
 
 
-
-today = datetime.date.today()
-yesterday = (today - datetime.timedelta(days=1) + datetime.timedelta(hours=8)).strftime("%m-%d")
+today_time = datetime.datetime.today()
+today_str = today_time.strftime("%Y-%m-%d %H:%M")
+yesterday_time = (today_time - datetime.timedelta(days=1))
+yesterday_str = yesterday_time.strftime("%m" + "月" + "%d" + "日")
 # now = (datetime.datetime.today() + datetime.timedelta(hours=8)).strftime("%Y-%m-%d %H:%M")
-now = (datetime.datetime.now(pytz.timezone('Asia/Hong_Kong'))).strftime("%Y-%m-%d %H:%M")
-days_14_ago = str(today - datetime.timedelta(days=14))
+now_time = (datetime.datetime.now(pytz.timezone('Asia/Hong_Kong')))
+now_str = now_time.strftime("%Y-%m-%d %H:%M")
+days_14_ago_time = today_time - datetime.timedelta(days=14)
+days_14_ago_str = days_14_ago_time.strftime("%m" + "月" + "%d" + "日")
+
+days_14_ago = str(today_time - datetime.timedelta(days=14))
 
 
 df = pd.read_csv('http://www.chp.gov.hk/files/misc/building_list_chi.csv')
@@ -18,9 +23,9 @@ df = df[df['個案最後到訪日期'] >= days_14_ago]
 df['曾到訪個案數量'] = df['相關個案編號'].str.split().str.len()
 df = df[df['個案最後到訪日期'].notnull()]
 
-st.title('你附近有個案到訪過的大廈嗎？')
-st.write('數據更新時間：' + now)
-st.write('過去14日：' + (today - datetime. timedelta(days=14) + datetime.timedelta(hours=8)).strftime("%m-%d") + ' 到 ' + yesterday)
+st.title('個案曾經到訪過的大廈')
+st.write('數據更新時間：' + now_str)
+st.write('過去14日範圍 (' + days_14_ago_str + ' 到 ' + yesterday_str + ')')
 
 df1 = df.groupby('地區').agg('count').reset_index()
 df1 = df1[['地區', '大廈名單']]
@@ -43,21 +48,19 @@ st.markdown(hide_table_row_index, unsafe_allow_html=True)
 
 # Display a static table
 
-st.header('18區個案到訪過的大廈數量排名：')
+st.header('18區大廈數量排名：')
 
 st.table(df1)
 
 
-
-
 area_list = (df1['地區'].values)
 option = st.selectbox(
-     '選擇地區以查看大廈詳細名稱', area_list)
+     '選擇地區以查看大廈詳細名稱（按照最新日期排列）', area_list)
 
 
 df2 = df[df['地區'] == option]
 df2 = df2[['地區', '大廈名單', '個案最後到訪日期', '曾到訪個案數量']]
-df2 = df2.sort_values('曾到訪個案數量', ascending=False)
+df2 = df2.sort_values('個案最後到訪日期', ascending=False)
 df2 = df2.reset_index(drop=True)
 df2['排名'] = df2.index + 1
 df2 = df2[['排名', '地區', '大廈名單', '個案最後到訪日期', '曾到訪個案數量']]
