@@ -102,11 +102,13 @@ if selection == '各區流動採樣站':
 
      df_pdf.rename(columns=df_pdf.iloc[0], inplace=True)
      df_pdf.drop(df_pdf.index[0], inplace=True)
-     df_pdf = df_pdf[df_pdf['開放日期 \nOpening dates'].notnull()]
+     df_pdf.columns = ['地區', '流動採樣站',
+                       '開放日期', '服務時間',
+                       '服務對象']
+     df_pdf = df_pdf[df_pdf['開放日期'].notnull()]
      df_pdf = df_pdf.fillna(method='ffill')
 
      st.table(df_pdf)
-
 
 
 
