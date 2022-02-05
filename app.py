@@ -40,7 +40,7 @@ st.header('香港COVID-19小工具')
 st.write('作者：datory.men')
 
 selection = st.radio(
-          '請選擇功能：', ['個案曾經到訪過的大廈', '各區流動採樣站'])
+          '請選擇功能：', ['各區流動採樣站', '個案曾經到訪過的大廈' ])
 
 if selection == '個案曾經到訪過的大廈':
 
@@ -87,14 +87,9 @@ if selection == '個案曾經到訪過的大廈':
 
      st.caption('數據來自衛生署。刷新頁面即可更新。')
 
-
-
 if selection == '各區流動採樣站':
 
-
-     # st.write('各區流動採樣站')
      st.write('信息更新日期：' + today)
-     # st.write('正在開發中。。。')
 
      pdf = pdfplumber.open(today + '-a-mscs.pdf')
      pages = len(pdf.pages)
@@ -104,19 +99,19 @@ if selection == '各區流動採樣站':
           first_page = pdf.pages[i]
           table = first_page.extract_table()
           table_df = pd.DataFrame(table)
-          table_df.columns = ['地區', '流動採樣站',
+          table_df.columns = ['地區名稱', '流動採樣站',
                               '開放日期', '服務時間',
                               '服務對象']
           df_pdf = df_pdf.append(table_df, ignore_index=True)
 
-     df_pdf['地區'] = df_pdf['地區'].str.replace(r'[a-zA-Z0-9  ()\n&,-/]+', '', regex=True)
-     df_pdf = df_pdf[~df_pdf['地區'].isin(['地區', '港島', '九龍', '新界'])]
+     df_pdf['地區名稱'] = df_pdf['地區名稱'].str.replace(r'[a-zA-Z0-9  ()\n&,-/]+', '', regex=True)
+     df_pdf = df_pdf[~df_pdf['地區名稱'].isin(['地區', '港島', '九龍', '新界'])]
      df_pdf = df_pdf.replace(r'', np.nan, regex=True)
      df_pdf = df_pdf.fillna(method='ffill')
-     df_pdf = df_pdf[['地區', '流動採樣站',
+     df_pdf = df_pdf[['地區名稱', '流動採樣站',
                       '開放日期', '服務時間']]
 
-     df_pdf['地區'] = df_pdf['地區'].str.replace(r'[a-zA-Z0-9  ()\n&,-/]+', '', regex=True)
+     df_pdf['地區名稱'] = df_pdf['地區名稱'].str.replace(r'[a-zA-Z0-9  ()\n&,-/]+', '', regex=True)
      df_pdf['流動採樣站'] = df_pdf['流動採樣站'].str.replace(r'[a-zA-Z0-9  ()\n&,-/]+', '', regex=True)
      df_pdf['開放日期'] = df_pdf['開放日期'].str.replace(r'[a-zA-Z()&,/\n]', '', regex=True)
      df_pdf['服務時間'] = df_pdf['服務時間'].str.replace(r'[\n()]+', '', regex=True).str.replace(r'[Monday and Friday]+', '',
@@ -124,13 +119,21 @@ if selection == '各區流動採樣站':
      df_pdf = df_pdf.replace(r'', np.nan, regex=True)
      df_pdf = df_pdf.fillna(method='ffill')
      df_pdf = df_pdf.reset_index(drop=True)
+     # df_pdf['序號'] = df_pdf.index + 1
+     # df_pdf = df_pdf[['序號', '地區名稱', '流動採樣站',
+     #                  '開放日期', '服務時間']]
 
      st.markdown(""" <style> .font {
      font-size:500px;} 
      </style> """, unsafe_allow_html=True)
 
-     # st.write('test')
-     st.table(df_pdf)
+     area_list = (df_pdf['地區名稱'].unique())
+     option = st.selectbox(
+          '選擇地區', area_list)
+
+     df_area = df_pdf[df_pdf['地區名稱'] == option]
+     st.table(df_area)
+
      st.caption('數據來自衛生署。每日更新。')
 
 st.caption('''
