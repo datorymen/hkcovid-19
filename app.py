@@ -3,6 +3,8 @@ import pandas as pd
 import datetime
 import pytz
 import pdfplumber
+import numpy as np
+import re
 
 
 
@@ -93,6 +95,7 @@ if selection == '各區流動採樣站':
      # st.write('各區流動採樣站')
      st.write('信息更新日期：' + today)
      # st.write('正在開發中。。。')
+
      pdf = pdfplumber.open(today + '-a-mscs.pdf')
      pages = len(pdf.pages)
 
@@ -101,17 +104,26 @@ if selection == '各區流動採樣站':
           first_page = pdf.pages[i]
           table = first_page.extract_table()
           table_df = pd.DataFrame(table)
-          df_pdf = df_pdf.append(table_df)
+          table_df.columns = ['地區', '流動採樣站',
+                              '開放日期', '服務時間',
+                              '服務對象']
+          df_pdf = df_pdf.append(table_df, ignore_index=True)
 
-     df_pdf.rename(columns=df_pdf.iloc[0], inplace=True)
-     df_pdf.drop(df_pdf.index[0], inplace=True)
-     df_pdf.columns = ['地區', '流動採樣站',
-                       '開放日期', '服務時間',
-                       '服務對象']
+     df_pdf['地區'] = df_pdf['地區'].str.replace(r'[a-zA-Z0-9  ()\n&,-/]+', '', regex=True)
+     df_pdf = df_pdf[~df_pdf['地區'].isin(['地區', '港島', '九龍', '新界'])]
+     df_pdf = df_pdf.replace(r'', np.nan, regex=True)
+     df_pdf = df_pdf.fillna(method='ffill')
      df_pdf = df_pdf[['地區', '流動採樣站',
                       '開放日期', '服務時間']]
-     df_pdf = df_pdf[df_pdf['開放日期'].notnull()]
+
+     df_pdf['地區'] = df_pdf['地區'].str.replace(r'[a-zA-Z0-9  ()\n&,-/]+', '', regex=True)
+     df_pdf['流動採樣站'] = df_pdf['流動採樣站'].str.replace(r'[a-zA-Z0-9  ()\n&,-/]+', '', regex=True)
+     df_pdf['開放日期'] = df_pdf['開放日期'].str.replace(r'[a-zA-Z()&,/\n]', '', regex=True)
+     df_pdf['服務時間'] = df_pdf['服務時間'].str.replace(r'[\n()]+', '', regex=True).str.replace(r'[Monday and Friday]+', '',
+                                                                                          regex=True)
+     df_pdf = df_pdf.replace(r'', np.nan, regex=True)
      df_pdf = df_pdf.fillna(method='ffill')
+     df_pdf = df_pdf.reset_index(drop=True)
 
      st.markdown(""" <style> .font {
      font-size:500px;} 
