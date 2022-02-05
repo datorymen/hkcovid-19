@@ -4,6 +4,9 @@ import datetime
 import pytz
 # import pdfplumber
 
+
+st.write('香港COVID-19小工具' )
+
 today = datetime.datetime.today().strftime('%Y-%m-%d')
 today_time = datetime.datetime.today()
 today_str = today_time.strftime("%Y-%m-%d %H:%M")
@@ -16,6 +19,8 @@ days_14_ago_time = today_time - datetime.timedelta(days=14)
 days_14_ago_str = days_14_ago_time.strftime("%m" + "月" + "%d" + "日")
 
 days_14_ago = str(today_time - datetime.timedelta(days=14))
+
+
 
 
 # CSS to inject contained in a string
@@ -31,12 +36,10 @@ st.markdown(hide_table_row_index, unsafe_allow_html=True)
 
 # Display a static table
 
-selection = st.sidebar.radio(
-     "請選擇功能：",
-     ('大廈清單', '流動採樣站'))
+selection = st.selectbox(
+          '請選擇功能', ['大廈清單', '各區流動採樣站'])
 
 if selection == '大廈清單':
-
 
      df = pd.read_csv('http://www.chp.gov.hk/files/misc/building_list_chi.csv')
      df['個案最後到訪日期'] = pd.to_datetime(df['個案最後到訪日期'], format="%d/%m/%Y")
@@ -83,9 +86,10 @@ if selection == '大廈清單':
      st.table(df2)
 
 
-if selection == '流動採樣站':
+if selection == '各區流動採樣站':
      st.title('各區流動採樣站')
      st.write('數據更新日期：' + today)
+     st.write('正在開發中。。。')
      # pdf = pdfplumber.open(today + '-a-mscs.pdf')
      # pages = len(pdf.pages)
      #
