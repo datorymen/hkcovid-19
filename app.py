@@ -136,7 +136,8 @@ if selection == '各區流動採樣站':
                       '開放日期', '服務時間']]
 
      df_pdf['地區名稱'] = df_pdf['地區名稱'].str.replace(r'[a-zA-Z0-9  ()\n&,-/]+', '', regex=True)
-     df_pdf['流動採樣站'] = df_pdf['流動採樣站'].str.replace(r'[a-zA-Z0-9  ()\n&,-/]+', '', regex=True)
+     df_pdf['流動採樣站'] = df_pdf['流動採樣站'].str.replace(r'[a-zA-Z\n(),&]', '', regex=True).str.replace(r'(\d+)\D*$', '',
+                                                                                                   regex=True)
      df_pdf['開放日期'] = df_pdf['開放日期'].str.replace(r'[a-zA-Z()&,/\n]', '', regex=True)
      df_pdf['服務時間'] = df_pdf['服務時間'].str.replace(r'[\n]', '', regex=True).str.replace('Monday and Friday', '')
 
