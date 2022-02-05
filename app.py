@@ -4,7 +4,6 @@ import datetime
 import pytz
 import pdfplumber
 import numpy as np
-import re
 
 
 max_width_str = f"max-width: 2000px;"
