@@ -37,8 +37,8 @@ days_14_ago_time = today_time - datetime.timedelta(days=14)
 days_14_ago_str = days_14_ago_time.strftime("%m" + "月" + "%d" + "日")
 days_14_ago = str(days_14_ago_time)
 
-st.write(today)
-st.write(yesterday)
+# st.write(today)
+# st.write(yesterday)
 
 # CSS to inject contained in a string
 hide_table_row_index = """
