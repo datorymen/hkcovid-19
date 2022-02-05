@@ -20,7 +20,6 @@ st.markdown(
 
 
 
-
 today = datetime.datetime.today().strftime('%Y-%m-%d')
 today_time = datetime.datetime.today()
 today_str = today_time.strftime("%Y-%m-%d %H:%M")
@@ -55,6 +54,17 @@ selection = st.radio(
           '請選擇功能：', ['各區流動採樣站', '個案曾經到訪過的大廈' ])
 
 if selection == '個案曾經到訪過的大廈':
+     max_width_str = f"max-width: 2000px;"
+     st.markdown(
+          f"""
+         <style>
+         .reportview-container.main.block-container{{
+             {max_width_str}
+         }}
+         </style>    
+         """,
+          unsafe_allow_html=True,
+     )
 
      df = pd.read_csv('http://www.chp.gov.hk/files/misc/building_list_chi.csv')
      df['個案最後到訪日期'] = pd.to_datetime(df['個案最後到訪日期'], format="%d/%m/%Y")
@@ -101,6 +111,17 @@ if selection == '個案曾經到訪過的大廈':
      st.caption('數據來自衛生署。刷新頁面即可更新。')
 
 if selection == '各區流動採樣站':
+     max_width_str = f"max-width: 2000px;"
+     st.markdown(
+          f"""
+         <style>
+         .reportview-container.main.block-container{{
+             {max_width_str}
+         }}
+         </style>    
+         """,
+          unsafe_allow_html=True,
+     )
 
      st.write('信息更新日期：' + today)
 
