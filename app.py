@@ -34,7 +34,7 @@ st.markdown(hide_table_row_index, unsafe_allow_html=True)
 
 # Display a static table
 
-st.title('香港COVID-19小工具')
+st.header('香港COVID-19小工具')
 st.write('作者：datory.men')
 
 selection = st.radio(
