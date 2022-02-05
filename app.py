@@ -5,7 +5,7 @@ import pytz
 import pdfplumber
 
 
-st.header('香港COVID-19小工具')
+st.title('香港COVID-19小工具')
 st.write('作者：datory.men')
 
 today = datetime.datetime.today().strftime('%Y-%m-%d')
@@ -46,7 +46,7 @@ if selection == '個案曾經到訪過的大廈':
      df['曾到訪個案數量'] = df['相關個案編號'].str.split().str.len()
      df = df[df['個案最後到訪日期'].notnull()]
 
-     st.title('個案曾經到訪過的大廈')
+     st.header('個案曾經到訪過的大廈')
      st.write('信息更新時間：' + now_str)
      st.write('過去14日範圍是指' + days_14_ago_str + ' 到 ' + yesterday_str)
 
@@ -86,7 +86,9 @@ if selection == '個案曾經到訪過的大廈':
 
 
 if selection == '各區流動採樣站':
-     st.title('各區流動採樣站')
+
+
+     st.header('各區流動採樣站')
      st.write('信息更新日期：' + today)
      # st.write('正在開發中。。。')
      pdf = pdfplumber.open(today + '-a-mscs.pdf')
