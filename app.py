@@ -38,7 +38,7 @@ st.title('香港COVID-19小工具')
 st.write('作者：datory.men')
 
 selection = st.radio(
-          '請選擇功能：', ['各區流動採樣站', '個案曾經到訪過的大廈' ])
+          '請選擇功能：', ['個案曾經到訪過的大廈', '各區流動採樣站'])
 
 if selection == '個案曾經到訪過的大廈':
 
@@ -48,7 +48,7 @@ if selection == '個案曾經到訪過的大廈':
      df['曾到訪個案數量'] = df['相關個案編號'].str.split().str.len()
      df = df[df['個案最後到訪日期'].notnull()]
 
-     st.header('個案曾經到訪過的大廈')
+     # st.write('個案曾經到訪過的大廈')
      st.write('信息更新時間：' + now_str)
      st.write('過去14日範圍是指' + days_14_ago_str + ' 到 ' + yesterday_str)
 
@@ -90,7 +90,7 @@ if selection == '個案曾經到訪過的大廈':
 if selection == '各區流動採樣站':
 
 
-     st.header('各區流動採樣站')
+     # st.write('各區流動採樣站')
      st.write('信息更新日期：' + today)
      # st.write('正在開發中。。。')
      pdf = pdfplumber.open(today + '-a-mscs.pdf')
