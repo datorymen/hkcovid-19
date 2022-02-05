@@ -5,7 +5,8 @@ import pytz
 import pdfplumber
 
 
-st.write('香港COVID-19小工具' )
+st.header('香港COVID-19小工具')
+st.write('作者：datory.men')
 
 today = datetime.datetime.today().strftime('%Y-%m-%d')
 today_time = datetime.datetime.today()
@@ -112,7 +113,7 @@ if selection == '各區流動採樣站':
      font-size:500px;} 
      </style> """, unsafe_allow_html=True)
 
-     st.write('test')
+     # st.write('test')
      st.table(df_pdf)
 
 
@@ -121,7 +122,9 @@ st.caption('''
 數據來自衛生署。刷新頁面即可更新。\n
 \n
 如果發現問題或者有任何建議，請發郵件到: \n
-number1datascientist(at)gmail點com
+number1datascientist(at)gmail點com \n
+\n
 ''')
 
-st.write('datory.men')
+st.write('祝福香港早日清零！')
+
