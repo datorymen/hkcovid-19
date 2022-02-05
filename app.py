@@ -5,8 +5,7 @@ import pytz
 import pdfplumber
 
 
-st.title('香港COVID-19小工具')
-st.write('作者：datory.men')
+
 
 today = datetime.datetime.today().strftime('%Y-%m-%d')
 today_time = datetime.datetime.today()
@@ -34,6 +33,9 @@ hide_table_row_index = """
 st.markdown(hide_table_row_index, unsafe_allow_html=True)
 
 # Display a static table
+
+st.title('香港COVID-19小工具')
+st.write('作者：datory.men')
 
 selection = st.radio(
           '請選擇功能：', ['各區流動採樣站', '個案曾經到訪過的大廈' ])
