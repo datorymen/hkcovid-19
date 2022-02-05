@@ -5,7 +5,7 @@ import pytz
 import pdfplumber
 import numpy as np
 
-st.set_page_config(layout='wide')
+# st.set_page_config(layout='wide')
 
 
 # today = datetime.datetime.today().strftime('%Y-%m-%d')
