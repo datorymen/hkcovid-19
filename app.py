@@ -7,6 +7,19 @@ import numpy as np
 
 st.set_page_config(layout='wide')
 
+
+st.markdown(
+            f'''
+            <style>
+                .reportview-container .sidebar-content {{
+                    padding-top: {1}rem;
+                }}
+                .reportview-container .main .block-container {{
+                    padding-top: {1}rem;
+                }}
+            </style>
+            ''',unsafe_allow_html=True)
+
 # max_width_str = f"max-width: 2000px;"
 # st.markdown(
 #         f"""
