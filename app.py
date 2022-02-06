@@ -5,7 +5,7 @@ import pytz
 import pdfplumber
 import numpy as np
 
-# st.set_page_config(layout='wide')
+st.set_page_config(layout='wide')
 
 
 now_time = (datetime.datetime.now(pytz.timezone('Asia/Hong_Kong')))
