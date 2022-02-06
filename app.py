@@ -8,20 +8,6 @@ import numpy as np
 # st.set_page_config(layout='wide')
 
 
-# today = datetime.datetime.today().strftime('%Y-%m-%d')
-# today_time = datetime.datetime.today()
-# today_str = today_time.strftime("%Y-%m-%d %H:%M")
-# yesterday = (today_time - datetime.timedelta(days=1)).strftime('%Y-%m-%d')
-# yesterday_time = (today_time - datetime.timedelta(days=1))
-# yesterday_str = yesterday_time.strftime("%m" + "月" + "%d" + "日")
-# # now = (datetime.datetime.today() + datetime.timedelta(hours=8)).strftime("%Y-%m-%d %H:%M")
-# now_time = (datetime.datetime.now(pytz.timezone('Asia/Hong_Kong')))
-# now_str = now_time.strftime("%Y-%m-%d %H:%M")
-# days_14_ago_time = today_time - datetime.timedelta(days=14)
-# days_14_ago_str = days_14_ago_time.strftime("%m" + "月" + "%d" + "日")
-# days_14_ago = str(today_time - datetime.timedelta(days=14))
-
-
 now_time = (datetime.datetime.now(pytz.timezone('Asia/Hong_Kong')))
 now_str = now_time.strftime("%Y-%m-%d %H:%M")
 
@@ -37,8 +23,6 @@ days_14_ago_time = today_time - datetime.timedelta(days=14)
 days_14_ago_str = days_14_ago_time.strftime("%m" + "月" + "%d" + "日")
 days_14_ago = str(days_14_ago_time)
 
-# st.write(today)
-# st.write(yesterday)
 
 # CSS to inject contained in a string
 hide_table_row_index = """
@@ -79,25 +63,25 @@ if selection == '個案曾經到訪過的大廈':
      df1 = df1[['排名', '地區', '14天内個案曾經到訪過的大廈总數量']]
 
 
-     # area_list = (df1['地區'].values)
-     # option = st.selectbox(
-     #      '選擇地區以查看大廈詳細名稱（按照最新的到訪日期排列）(頁面底部有18區大廈數量排名)', area_list)
+     area_list = (df1['地區'].values)
+     option = st.selectbox(
+          '選擇地區以查看大廈詳細名稱（按照最新的到訪日期排列）(頁面底部有18區大廈數量排名)', area_list)
 
 
-     # df2 = df[df['地區'] == option]
-     # df2 = df2[['地區', '大廈名單', '個案最後到訪日期', '曾到訪個案數量']]
-     # df2 = df2.sort_values('個案最後到訪日期', ascending=False)
-     # df2 = df2.reset_index(drop=True)
-     # df2['排名'] = df2.index + 1
-     # df2 = df2[['排名', '地區', '大廈名單', '個案最後到訪日期', '曾到訪個案數量']]
-     # df2['個案最後到訪日期'] = df2['個案最後到訪日期'].astype('str')
-     # df2['地區名稱'] = df2['地區']
-     # df2 = df2.drop('地區', axis=1)
-     # df2 = df2[['排名', '地區名稱', '大廈名單', '個案最後到訪日期', '曾到訪個案數量']]
-     # df2.columns = ['排序', '地區名稱', '大廈名單', '個案最後到訪日期', '曾到訪個案數量']
-     #
-     #
-     # st.table(df2)
+     df2 = df[df['地區'] == option]
+     df2 = df2[['地區', '大廈名單', '個案最後到訪日期', '曾到訪個案數量']]
+     df2 = df2.sort_values('個案最後到訪日期', ascending=False)
+     df2 = df2.reset_index(drop=True)
+     df2['排名'] = df2.index + 1
+     df2 = df2[['排名', '地區', '大廈名單', '個案最後到訪日期', '曾到訪個案數量']]
+     df2['個案最後到訪日期'] = df2['個案最後到訪日期'].astype('str')
+     df2['地區名稱'] = df2['地區']
+     df2 = df2.drop('地區', axis=1)
+     df2 = df2[['排名', '地區名稱', '大廈名單', '個案最後到訪日期', '曾到訪個案數量']]
+     df2.columns = ['排序', '地區名稱', '大廈名單', '個案最後到訪日期', '曾到訪個案數量']
+
+
+     st.table(df2)
 
      st.header('18區大廈數量排名：')
 
@@ -106,8 +90,6 @@ if selection == '個案曾經到訪過的大廈':
      st.caption('數據來自衛生署。刷新頁面即可更新。')
 
 if selection == '各區流動採樣站':
-
-     # st.write('信息更新日期：' + today)
 
      try:
           pdf = pdfplumber.open(today + '-a-mscs.pdf')
@@ -149,12 +131,12 @@ if selection == '各區流動採樣站':
      font-size:500px;} 
      </style> """, unsafe_allow_html=True)
 
-     # area_list = (df_pdf['地區名稱'].unique())
-     # option = st.selectbox(
-     #      '選擇地區', area_list)
-     #
-     # df_area = df_pdf[df_pdf['地區名稱'] == option]
-     # st.table(df_area)
+     area_list = (df_pdf['地區名稱'].unique())
+     option = st.selectbox(
+          '選擇地區', area_list)
+
+     df_area = df_pdf[df_pdf['地區名稱'] == option]
+     st.table(df_area)
 
      st.caption('數據來自衛生署。每日更新。')
 
