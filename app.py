@@ -169,7 +169,7 @@ if selection == '個案曾居住的住宅大廈':
      # st.write('明細數據如下：')
 
 
-     area_list = (df_cases['地區'].unique())
+     area_list = (df4['地區'].values)
      option = st.selectbox(
           '選擇地區以查看大廈詳細名稱（按照最新的報告日期排列）', area_list)
 
