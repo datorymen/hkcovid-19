@@ -19,7 +19,7 @@ yesterday_time = (today_time - datetime.timedelta(days=1))
 yesterday = yesterday_time.strftime('%Y-%m-%d')
 yesterday_str = yesterday_time.strftime("%m" + "月" + "%d" + "日")
 
-days_14_ago_time = today_time - datetime.timedelta(days=14)
+days_14_ago_time = today_time - datetime.timedelta(days=15)
 days_14_ago_str = days_14_ago_time.strftime("%m" + "月" + "%d" + "日")
 days_14_ago = str(days_14_ago_time)
 
@@ -53,7 +53,7 @@ if selection == '個案曾經到訪過的大廈':
      df = df[df['個案最後到訪日期'].notnull()]
 
      st.write('信息更新時間：' + now_str)
-     st.write('過去14日範圍是指' + days_14_ago_str + ' 到 ' + yesterday_str)
+     st.write('時間範圍是從' + days_14_ago_str + ' 到 ' + yesterday_str)
 
      df1 = df.groupby('地區').agg('count').reset_index()
      df1 = df1[['地區', '大廈名單']]
@@ -143,7 +143,7 @@ if selection == '各區流動採樣站':
 if selection == '個案曾居住的住宅大廈':
 
      st.write('信息更新時間：' + now_str)
-     st.write('過去14日範圍是指' + days_14_ago_str + ' 到 ' + yesterday_str)
+     st.write('時間範圍是從' + days_14_ago_str + ' 到 ' + yesterday_str)
 
      df_living = pd.read_csv('http://www.chp.gov.hk/files/misc/building_list_chi.csv')
      df_living = df_living[df_living['個案最後到訪日期'].isnull()]
