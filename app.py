@@ -37,6 +37,8 @@ st.markdown(hide_table_row_index, unsafe_allow_html=True)
 
 st.header('香港COVID-19小工具')
 st.write('作者：datory.men')
+st.write('祝福香港早日清零！')
+
 
 selection = st.radio(
           '請選擇功能：', ['各區流動採樣站', '個案曾經到訪過的大廈', '個案曾居住的住宅大廈', '排名'])
@@ -228,5 +230,4 @@ number1datascientist(at)gmail點com \n
 \n
 ''')
 
-st.write('祝福香港早日清零！')
 
