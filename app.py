@@ -35,37 +35,67 @@ hide_table_row_index = """
 # Inject CSS with Markdown
 st.markdown(hide_table_row_index, unsafe_allow_html=True)
 
-# Display a static table
-
 st.header('香港COVID-19小工具')
 st.write('作者：datory.men')
 
 selection = st.radio(
-          '請選擇功能：', ['各區流動採樣站', '個案曾經到訪過的大廈', '個案曾居住的住宅大廈'])
+          '請選擇功能：', ['各區流動採樣站', '個案曾經到訪過的大廈', '個案曾居住的住宅大廈', '排名'])
+
+df = pd.read_csv('http://www.chp.gov.hk/files/misc/building_list_chi.csv')
+df['個案最後到訪日期'] = pd.to_datetime(df['個案最後到訪日期'], format="%d/%m/%Y")
+df = df[df['個案最後到訪日期'] >= days_14_ago]
+df['曾到訪個案數量'] = df['相關個案編號'].str.split().str.len()
+df = df[df['個案最後到訪日期'].notnull()]
+
+df1 = df.groupby('地區').agg('count').reset_index()
+df1 = df1[['地區', '大廈名單']]
+df1.columns = ['地區', '14天内個案曾經到訪過的大廈总數量']
+df1 = df1.sort_values('14天内個案曾經到訪過的大廈总數量', ascending=False).reset_index(drop=True)
+df1['排名'] = df1.index + 1
+df1 = df1[['排名', '地區', '14天内個案曾經到訪過的大廈总數量']]
+
+df_living = pd.read_csv('http://www.chp.gov.hk/files/misc/building_list_chi.csv')
+df_living = df_living[df_living['個案最後到訪日期'].isnull()]
+df_living = df_living[['地區', '大廈名單', '相關個案編號']]
+df_living.columns = ['地區', '大廈名單', '個案編號']
+df_living['個案編號'] = df_living['個案編號'].astype('int')
+
+df_all = pd.read_csv('http://www.chp.gov.hk/files/misc/enhanced_sur_covid_19_chi.csv')
+df_all = df_all[['個案編號', '報告日期', '性別', '年齡', '個案狀況*']]
+df_all['報告日期'] = pd.to_datetime(df_all['報告日期'], format="%d/%m/%Y").dt.strftime('%Y-%m-%d')
+
+df_cases = pd.merge(df_living, df_all, how='left', on='個案編號')
+
+df4 = df_cases.groupby('地區').agg('count').reset_index()
+df4 = df4[['地區', '大廈名單']]
+df4.columns = ['地區', '14天内的個案居住的大廈总數量']
+df4 = df4.sort_values('14天内的個案居住的大廈总數量', ascending=False).reset_index(drop=True)
+df4['排名'] = df4.index + 1
+df4 = df4[['排名', '地區', '14天内的個案居住的大廈总數量']]
+
 
 if selection == '個案曾經到訪過的大廈':
 
-
-     df = pd.read_csv('http://www.chp.gov.hk/files/misc/building_list_chi.csv')
-     df['個案最後到訪日期'] = pd.to_datetime(df['個案最後到訪日期'], format="%d/%m/%Y")
-     df = df[df['個案最後到訪日期'] >= days_14_ago]
-     df['曾到訪個案數量'] = df['相關個案編號'].str.split().str.len()
-     df = df[df['個案最後到訪日期'].notnull()]
+     # df = pd.read_csv('http://www.chp.gov.hk/files/misc/building_list_chi.csv')
+     # df['個案最後到訪日期'] = pd.to_datetime(df['個案最後到訪日期'], format="%d/%m/%Y")
+     # df = df[df['個案最後到訪日期'] >= days_14_ago]
+     # df['曾到訪個案數量'] = df['相關個案編號'].str.split().str.len()
+     # df = df[df['個案最後到訪日期'].notnull()]
 
      st.write('信息更新時間：' + now_str)
-     st.write('時間範圍：' + days_14_ago_str + ' 到 ' + yesterday_str)
+     # st.write('時間範圍：' + days_14_ago_str + ' 到 ' + yesterday_str)
 
-     df1 = df.groupby('地區').agg('count').reset_index()
-     df1 = df1[['地區', '大廈名單']]
-     df1.columns = ['地區', '14天内個案曾經到訪過的大廈总數量']
-     df1 = df1.sort_values('14天内個案曾經到訪過的大廈总數量', ascending=False).reset_index(drop=True)
-     df1['排名'] = df1.index + 1
-     df1 = df1[['排名', '地區', '14天内個案曾經到訪過的大廈总數量']]
-
+     # df1 = df.groupby('地區').agg('count').reset_index()
+     # df1 = df1[['地區', '大廈名單']]
+     # df1.columns = ['地區', '14天内個案曾經到訪過的大廈总數量']
+     # df1 = df1.sort_values('14天内個案曾經到訪過的大廈总數量', ascending=False).reset_index(drop=True)
+     # df1['排名'] = df1.index + 1
+     # df1 = df1[['排名', '地區', '14天内個案曾經到訪過的大廈总數量']]
+     #
 
      area_list = (df1['地區'].values)
      option = st.selectbox(
-          '選擇地區以查看大廈詳細名稱（按照最新的到訪日期排列）(頁面底部有18區大廈數量排名)', area_list)
+          '選擇地區以查看大廈詳細名稱（按照最新的到訪日期排列）', area_list)
 
 
      df2 = df[df['地區'] == option]
@@ -83,11 +113,11 @@ if selection == '個案曾經到訪過的大廈':
 
      st.table(df2)
 
-     st.header('18區大廈數量排名：')
-
-     st.table(df1)
-
-     st.caption('數據來自衛生署。刷新頁面即可更新。')
+     # st.header('18區大廈數量排名：')
+     #
+     # st.table(df1)
+     #
+     # st.caption('數據來自衛生署。刷新頁面即可更新。')
 
 if selection == '各區流動採樣站':
 
@@ -143,28 +173,28 @@ if selection == '各區流動採樣站':
 if selection == '個案曾居住的住宅大廈':
 
      st.write('信息更新時間：' + now_str)
-     st.write('時間範圍：' + days_14_ago_str + ' 到 ' + yesterday_str)
+     # st.write('時間範圍：' + days_14_ago_str + ' 到 ' + yesterday_str)
 
-     df_living = pd.read_csv('http://www.chp.gov.hk/files/misc/building_list_chi.csv')
-     df_living = df_living[df_living['個案最後到訪日期'].isnull()]
-     df_living = df_living[['地區', '大廈名單', '相關個案編號']]
-     df_living.columns = ['地區', '大廈名單', '個案編號']
-     df_living['個案編號'] = df_living['個案編號'].astype('int')
+     # df_living = pd.read_csv('http://www.chp.gov.hk/files/misc/building_list_chi.csv')
+     # df_living = df_living[df_living['個案最後到訪日期'].isnull()]
+     # df_living = df_living[['地區', '大廈名單', '相關個案編號']]
+     # df_living.columns = ['地區', '大廈名單', '個案編號']
+     # df_living['個案編號'] = df_living['個案編號'].astype('int')
+     #
+     # df_all = pd.read_csv('http://www.chp.gov.hk/files/misc/enhanced_sur_covid_19_chi.csv')
+     # df_all = df_all[['個案編號', '報告日期', '性別', '年齡', '個案狀況*']]
+     # df_all['報告日期'] = pd.to_datetime(df_all['報告日期'], format="%d/%m/%Y").dt.strftime('%Y-%m-%d')
+     #
+     # df_cases = pd.merge(df_living, df_all, how='left', on='個案編號')
+     #
+     # df4 = df_cases.groupby('地區').agg('count').reset_index()
+     # df4 = df4[['地區', '大廈名單']]
+     # df4.columns = ['地區', '14天内的個案居住的大廈总數量']
+     # df4 = df4.sort_values('14天内的個案居住的大廈总數量', ascending=False).reset_index(drop=True)
+     # df4['排名'] = df4.index + 1
+     # df4 = df4[['排名', '地區', '14天内的個案居住的大廈总數量']]
 
-     df_all = pd.read_csv('http://www.chp.gov.hk/files/misc/enhanced_sur_covid_19_chi.csv')
-     df_all = df_all[['個案編號', '報告日期', '性別', '年齡', '個案狀況*']]
-     df_all['報告日期'] = pd.to_datetime(df_all['報告日期'], format="%d/%m/%Y").dt.strftime('%Y-%m-%d')
-
-     df_cases = pd.merge(df_living, df_all, how='left', on='個案編號')
-
-     df4 = df_cases.groupby('地區').agg('count').reset_index()
-     df4 = df4[['地區', '大廈名單']]
-     df4.columns = ['地區', '14天内的個案居住的大廈总數量']
-     df4 = df4.sort_values('14天内的個案居住的大廈总數量', ascending=False).reset_index(drop=True)
-     df4['排名'] = df4.index + 1
-     df4 = df4[['排名', '地區', '14天内的個案居住的大廈总數量']]
-
-     st.table(df4)
+     # st.table(df4)
 
      # st.write('明細數據如下：')
 
@@ -180,6 +210,14 @@ if selection == '個案曾居住的住宅大廈':
 
      st.table(df3)
 
+     st.caption('數據來自衛生署。刷新頁面即可更新。')
+
+if selection == '排名':
+     st.header('18區到訪大廈數量排名：')
+     st.table(df1)
+
+     st.header('18區居住大廈數量排名：')
+     st.table(df4)
 
 
      st.caption('數據來自衛生署。刷新頁面即可更新。')
