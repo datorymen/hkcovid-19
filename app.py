@@ -77,37 +77,11 @@ df4['排名'] = df4.index + 1
 df4 = df4[['排名', '地區', '14天内的個案居住的大廈总數量']]
 
 
-if selection == '個案曾經到訪過的大廈':
-
-
-     st.write('信息更新時間：' + now_str)
-
-     area_list = (df1['地區'].values)
-     option = st.selectbox(
-          '選擇地區以查看大廈詳細名稱（按照最新的到訪日期排列）', area_list)
-
-
-     df2 = df[df['地區'] == option]
-     # df2 = df2[['地區', '大廈名單', '個案最後到訪日期', '曾到訪個案數量']]
-     df2 = df2[['地區', '大廈名單', '個案最後到訪日期']]
-     df2 = df2.sort_values('個案最後到訪日期', ascending=False)
-     df2 = df2.reset_index(drop=True)
-     df2['排名'] = df2.index + 1
-     df2 = df2[['排名', '地區', '大廈名單', '個案最後到訪日期']]
-     df2['個案最後到訪日期'] = df2['個案最後到訪日期'].astype('str')
-     df2['地區名稱'] = df2['地區']
-     df2 = df2.drop('地區', axis=1)
-     df2 = df2[['排名', '地區名稱', '大廈名單', '個案最後到訪日期']]
-     df2.columns = ['排序', '地區名稱', '大廈名單', '個案最後到訪日期']
-
-
-     st.table(df2)
-
-
 if selection == '各區流動採樣站':
 
      # pdf = pdfplumber.open(today + '-a-mscs.pdf')
      pdf = pdfplumber.open('2022-02-09-a-mscs.pdf')
+     st.write('信息更新日期：' + today)
 
      # try:
      #      pdf = pdfplumber.open(today + '-a-mscs.pdf')
@@ -161,35 +135,63 @@ if selection == '各區流動採樣站':
 
      st.caption('數據來自衛生署。每日更新。')
 
-if selection == '個案曾居住的住宅大廈':
+
+if selection == '個案曾經到訪過的大廈':
 
      st.write('信息更新時間：' + now_str)
 
-
-     area_list = (df4['地區'].values)
+     area_list = (df1['地區'].values)
      option = st.selectbox(
-          '選擇地區以查看大廈詳細名稱（按照最新的報告日期排列）', area_list)
+          '選擇地區以查看大廈詳細名稱（按照最新的到訪日期排列）', area_list)
 
 
-     df3 = df_cases[df_cases['地區'] == option]
-     df3 = df3.sort_values('個案編號', ascending=False)
-     df3 = df3.reset_index(drop=True)
-
-     st.table(df3)
-
-     st.caption('數據來自衛生署。刷新頁面即可更新。')
-
-if selection == '排名':
-     st.header('18區到訪大廈數量排名：')
-     st.table(df1)
-
-     st.header('18區居住大廈數量排名：')
-     st.table(df4)
+     df2 = df[df['地區'] == option]
+     # df2 = df2[['地區', '大廈名單', '個案最後到訪日期', '曾到訪個案數量']]
+     df2 = df2[['地區', '大廈名單', '個案最後到訪日期']]
+     df2 = df2.sort_values('個案最後到訪日期', ascending=False)
+     df2 = df2.reset_index(drop=True)
+     df2['排名'] = df2.index + 1
+     df2 = df2[['排名', '地區', '大廈名單', '個案最後到訪日期']]
+     df2['個案最後到訪日期'] = df2['個案最後到訪日期'].astype('str')
+     df2['地區名稱'] = df2['地區']
+     df2 = df2.drop('地區', axis=1)
+     df2 = df2[['排名', '地區名稱', '大廈名單', '個案最後到訪日期']]
+     df2.columns = ['排序', '地區名稱', '大廈名單', '個案最後到訪日期']
 
 
-     st.caption('數據來自衛生署。刷新頁面即可更新。')
-# except:
-#      st.write(today + ' 數據文件出現問題。官網更新後會自動顯示。')
+     st.table(df2)
+
+
+
+# if selection == '個案曾居住的住宅大廈':
+#
+#      st.write('信息更新時間：' + now_str)
+#
+#
+#      area_list = (df4['地區'].values)
+#      option = st.selectbox(
+#           '選擇地區以查看大廈詳細名稱（按照最新的報告日期排列）', area_list)
+#
+#
+#      df3 = df_cases[df_cases['地區'] == option]
+#      df3 = df3.sort_values('個案編號', ascending=False)
+#      df3 = df3.reset_index(drop=True)
+#
+#      st.table(df3)
+#
+#      st.caption('數據來自衛生署。刷新頁面即可更新。')
+#
+# if selection == '排名':
+#      st.header('18區到訪大廈數量排名：')
+#      st.table(df1)
+#
+#      st.header('18區居住大廈數量排名：')
+#      st.table(df4)
+#
+#
+#      st.caption('數據來自衛生署。刷新頁面即可更新。')
+# # except:
+# #      st.write(today + ' 數據文件出現問題。官網更新後會自動顯示。')
 
 st.caption('''
 如果發現問題或者有任何建議，請發郵件到: \n
