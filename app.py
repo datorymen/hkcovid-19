@@ -41,8 +41,8 @@ st.write('祝福香港早日清零！')
 # st.write(today)
 
 # try:
-selection = st.radio(
-          '請選擇功能：', ['各區流動採樣站', '個案曾經到訪過的大廈', '個案曾居住的住宅大廈', '排名'])
+# selection = st.radio('請選擇功能：', ['各區流動採樣站', '個案曾經到訪過的大廈', '個案曾居住的住宅大廈', '排名'])
+selection = st.radio('請選擇功能：', ['各區流動採樣站', '個案曾經到訪過的大廈'])
 
 df = pd.read_csv('http://www.chp.gov.hk/files/misc/building_list_chi.csv')
 df['個案最後到訪日期'] = pd.to_datetime(df['個案最後到訪日期'], format="%d/%m/%Y")
