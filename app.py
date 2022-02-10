@@ -80,7 +80,7 @@ df4 = df4[['排名', '地區', '14天内的個案居住的大廈总數量']]
 if selection == '各區流動採樣站':
 
      # pdf = pdfplumber.open(today + '-a-mscs.pdf')
-     pdf = pdfplumber.open('2022-02-09-a-mscs.pdf')
+     pdf = pdfplumber.open('2022-02-09-b-mscs.pdf')
      st.write('信息更新日期：' + today)
 
      # try:
