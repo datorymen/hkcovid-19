@@ -45,7 +45,7 @@ st.write('祝福香港早日清零！')
 # selection = st.radio('', ['個案曾經到訪過的大廈'])
 
 st.title('個案曾經到訪過的大廈')
-selection = '個案曾經到訪過的大廈'
+# selection = '個案曾經到訪過的大廈'
 
 df = pd.read_csv('http://www.chp.gov.hk/files/misc/building_list_chi.csv')
 df['個案最後到訪日期'] = pd.to_datetime(df['個案最後到訪日期'], format="%d/%m/%Y")
@@ -80,89 +80,89 @@ df4['排名'] = df4.index + 1
 df4 = df4[['排名', '地區', '14天内的個案居住的大廈总數量']]
 
 
-if selection == '各區流動採樣站':
-
-     pdf = pdfplumber.open(today + '-a-mscs.pdf')
-     # pdf = pdfplumber.open('2022-02-09-b-mscs.pdf')
-     st.write('信息更新日期：' + today)
-
-     # try:
-     #      pdf = pdfplumber.open(today + '-a-mscs.pdf')
-     #      st.write('信息更新日期：' + today)
-     # except:
-     #      pdf = pdfplumber.open(yesterday + '-b-mscs.pdf')
-     #      st.write('信息更新日期：' + today)
-     # else:
-     #      pdf = pdfplumber.open(yesterday + '-a-mscs.pdf')
-     #      st.write('信息更新日期：' + yesterday)
-
-     pages = len(pdf.pages)
-
-     df_pdf = pd.DataFrame()
-     for i in range(1, pages):
-          first_page = pdf.pages[i]
-          table = first_page.extract_table()
-          table_df = pd.DataFrame(table)
-          table_df.columns = ['地區名稱', '流動採樣站',
-                              '開放日期', '服務時間',
-                              '服務對象']
-          df_pdf = df_pdf.append(table_df, ignore_index=True)
-
-     df_pdf['地區名稱'] = df_pdf['地區名稱'].str.replace(r'[a-zA-Z0-9  ()\n&,-/]+', '', regex=True)
-     df_pdf = df_pdf[~df_pdf['地區名稱'].isin(['地區', '港島', '九龍', '新界'])]
-     df_pdf = df_pdf.replace(r'', np.nan, regex=True)
-     df_pdf = df_pdf.fillna(method='ffill')
-     df_pdf = df_pdf[['地區名稱', '流動採樣站',
-                      '開放日期', '服務時間']]
-
-     df_pdf['地區名稱'] = df_pdf['地區名稱'].str.replace(r'[a-zA-Z0-9  ()\n&,-/]+', '', regex=True)
-     df_pdf['流動採樣站'] = df_pdf['流動採樣站'].str.replace(r'[a-zA-Z\n(),&]', '', regex=True).str.replace(r'(\d+)\D*$', '',
-                                                                                                   regex=True)
-     df_pdf['開放日期'] = df_pdf['開放日期'].str.replace(r'[a-zA-Z()&,/\n]', '', regex=True)
-     df_pdf['服務時間'] = df_pdf['服務時間'].str.replace(r'[\n]', '', regex=True).str.replace('Monday and Friday', '')
-
-     df_pdf = df_pdf.replace(r'', np.nan, regex=True)
-     df_pdf = df_pdf.fillna(method='ffill')
-     df_pdf = df_pdf.reset_index(drop=True)
-
-     # st.markdown(""" <style> .font {
-     # font-size:500px;}
-     # </style> """, unsafe_allow_html=True)
-     #
-     # area_list = (df_pdf['地區名稱'].unique())
-     # option = st.selectbox(
-     #      '選擇地區', area_list)
-     #
-     # df_area = df_pdf[df_pdf['地區名稱'] == option]
-     st.table(df_pdf)
-
-     st.caption('數據來自衛生署。每日更新。')
-
-
-if selection == '個案曾經到訪過的大廈':
-
-     st.write('信息更新時間：' + now_str)
-
-     area_list = (df1['地區'].values)
-     option = st.selectbox(
-          '選擇地區以查看大廈詳細名稱（按照最新的到訪日期排列）', area_list)
+# if selection == '各區流動採樣站':
+#
+#      pdf = pdfplumber.open(today + '-a-mscs.pdf')
+#      # pdf = pdfplumber.open('2022-02-09-b-mscs.pdf')
+#      st.write('信息更新日期：' + today)
+#
+#      # try:
+#      #      pdf = pdfplumber.open(today + '-a-mscs.pdf')
+#      #      st.write('信息更新日期：' + today)
+#      # except:
+#      #      pdf = pdfplumber.open(yesterday + '-b-mscs.pdf')
+#      #      st.write('信息更新日期：' + today)
+#      # else:
+#      #      pdf = pdfplumber.open(yesterday + '-a-mscs.pdf')
+#      #      st.write('信息更新日期：' + yesterday)
+#
+#      pages = len(pdf.pages)
+#
+#      df_pdf = pd.DataFrame()
+#      for i in range(1, pages):
+#           first_page = pdf.pages[i]
+#           table = first_page.extract_table()
+#           table_df = pd.DataFrame(table)
+#           table_df.columns = ['地區名稱', '流動採樣站',
+#                               '開放日期', '服務時間',
+#                               '服務對象']
+#           df_pdf = df_pdf.append(table_df, ignore_index=True)
+#
+#      df_pdf['地區名稱'] = df_pdf['地區名稱'].str.replace(r'[a-zA-Z0-9  ()\n&,-/]+', '', regex=True)
+#      df_pdf = df_pdf[~df_pdf['地區名稱'].isin(['地區', '港島', '九龍', '新界'])]
+#      df_pdf = df_pdf.replace(r'', np.nan, regex=True)
+#      df_pdf = df_pdf.fillna(method='ffill')
+#      df_pdf = df_pdf[['地區名稱', '流動採樣站',
+#                       '開放日期', '服務時間']]
+#
+#      df_pdf['地區名稱'] = df_pdf['地區名稱'].str.replace(r'[a-zA-Z0-9  ()\n&,-/]+', '', regex=True)
+#      df_pdf['流動採樣站'] = df_pdf['流動採樣站'].str.replace(r'[a-zA-Z\n(),&]', '', regex=True).str.replace(r'(\d+)\D*$', '',
+#                                                                                                    regex=True)
+#      df_pdf['開放日期'] = df_pdf['開放日期'].str.replace(r'[a-zA-Z()&,/\n]', '', regex=True)
+#      df_pdf['服務時間'] = df_pdf['服務時間'].str.replace(r'[\n]', '', regex=True).str.replace('Monday and Friday', '')
+#
+#      df_pdf = df_pdf.replace(r'', np.nan, regex=True)
+#      df_pdf = df_pdf.fillna(method='ffill')
+#      df_pdf = df_pdf.reset_index(drop=True)
+#
+#      # st.markdown(""" <style> .font {
+#      # font-size:500px;}
+#      # </style> """, unsafe_allow_html=True)
+#      #
+#      # area_list = (df_pdf['地區名稱'].unique())
+#      # option = st.selectbox(
+#      #      '選擇地區', area_list)
+#      #
+#      # df_area = df_pdf[df_pdf['地區名稱'] == option]
+#      st.table(df_pdf)
+#
+#      st.caption('數據來自衛生署。每日更新。')
 
 
-     df2 = df[df['地區'] == option]
-     # df2 = df2[['地區', '大廈名單', '個案最後到訪日期', '曾到訪個案數量']]
-     df2 = df2[['地區', '大廈名單', '個案最後到訪日期']]
-     df2 = df2.sort_values('個案最後到訪日期', ascending=False)
-     df2 = df2.reset_index(drop=True)
-     df2['排名'] = df2.index + 1
-     df2 = df2[['排名', '地區', '大廈名單', '個案最後到訪日期']]
-     df2['個案最後到訪日期'] = df2['個案最後到訪日期'].astype('str')
-     df2['地區名稱'] = df2['地區']
-     df2 = df2.drop('地區', axis=1)
-     df2 = df2[['排名', '地區名稱', '大廈名單', '個案最後到訪日期']]
-     df2.columns = ['排序', '地區名稱', '大廈名單', '個案最後到訪日期']
+# if selection == '個案曾經到訪過的大廈':
+
+st.write('信息更新時間：' + now_str)
+
+area_list = (df1['地區'].values)
+option = st.selectbox(
+     '選擇地區以查看大廈詳細名稱（按照最新的到訪日期排列）', area_list)
 
 
-     st.table(df2)
+df2 = df[df['地區'] == option]
+# df2 = df2[['地區', '大廈名單', '個案最後到訪日期', '曾到訪個案數量']]
+df2 = df2[['地區', '大廈名單', '個案最後到訪日期']]
+df2 = df2.sort_values('個案最後到訪日期', ascending=False)
+df2 = df2.reset_index(drop=True)
+df2['排名'] = df2.index + 1
+df2 = df2[['排名', '地區', '大廈名單', '個案最後到訪日期']]
+df2['個案最後到訪日期'] = df2['個案最後到訪日期'].astype('str')
+df2['地區名稱'] = df2['地區']
+df2 = df2.drop('地區', axis=1)
+df2 = df2[['排名', '地區名稱', '大廈名單', '個案最後到訪日期']]
+df2.columns = ['排序', '地區名稱', '大廈名單', '個案最後到訪日期']
+
+
+st.table(df2)
 
 
 
