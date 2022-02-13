@@ -145,7 +145,7 @@ st.write('信息更新時間：' + now_str)
 
 area_list = (df1['地區'].values)
 option = st.selectbox(
-     '選擇地區以查看大廈詳細名稱（按照最新的到訪日期排列）', area_list)
+     '選擇地區以查看大廈詳細名稱', area_list)
 
 
 df2 = df[df['地區'] == option]
@@ -160,7 +160,7 @@ df2['地區名稱'] = df2['地區']
 df2 = df2.drop('地區', axis=1)
 df2 = df2[['排名', '地區名稱', '大廈名單', '個案最後到訪日期']]
 df2.columns = ['排序', '地區名稱', '大廈名單', '個案最後到訪日期']
-
+df2 = df2[['排序', '地區名稱', '大廈名單',]]
 
 st.table(df2)
 
