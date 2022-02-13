@@ -51,7 +51,7 @@ df = pd.read_csv('http://www.chp.gov.hk/files/misc/building_list_chi.csv')
 df['個案最後到訪日期'] = pd.to_datetime(df['個案最後到訪日期'], format="%d/%m/%Y")
 # df = df[df['個案最後到訪日期'] >= days_14_ago]
 # df['曾到訪個案數量'] = df['相關個案編號'].str.split().str.len()
-df = df[df['個案最後到訪日期'].notnull()]
+# df = df[df['個案最後到訪日期'].notnull()]
 
 df1 = df.groupby('地區').agg('count').reset_index()
 df1 = df1[['地區', '大廈名單']]
